@@ -13,6 +13,7 @@ use Illuminate\Support\Facades\Log;
 class FaceReconstructController extends Controller {
 
     public function store( Request $request ) {
+        set_time_limit(0);
         $validated = $request->validate( [
             'image' => 'required|image|max:4096',
         ] );
@@ -31,7 +32,7 @@ class FaceReconstructController extends Controller {
                 file_get_contents( public_path( $imageName ) ),
                 $imageName
             )
-            ->post( 'https://anastamer-deepface-communicated.hf.space/recognize' );
+            ->post( 'https://anastamer-deepface-project.hf.space/forensicAnalysis' );
 
             $aiResponse= $response->json();
             if ( !$aiResponse || !isset( $aiResponse[ 'enhanced_image_base64' ] ) ) {
