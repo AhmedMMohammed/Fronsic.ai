@@ -12,8 +12,7 @@ class FacePredictionService
     public function analyzeDistortedFace($file): ?array
     {
         try {
-            // الموديل يحتاج وقتاً طويلاً للمعالجة، لذا نرفع الـ Timeout
-            $response = Http::timeout(300)->asMultipart()
+            $response = Http::timeout(180)
                 ->attach('file', fopen($file->getRealPath(), 'r'), $file->getClientOriginalName())
                 ->post("{$this->baseUrl}/forensicAnalysis");
 
