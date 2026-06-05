@@ -63,6 +63,6 @@ class FaceRecogController extends Controller {
                     ], 500 );
                 }
 
-            }
         }
+}
 

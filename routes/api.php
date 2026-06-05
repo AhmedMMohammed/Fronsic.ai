@@ -14,6 +14,7 @@ use App\Http\Controllers\API\DeepFakeController;
 use App\Http\Controllers\API\DnaController;
 use App\Http\Controllers\API\FacePredictionController;
 use App\Http\Controllers\API\FaceRecogController;
+use App\Http\Controllers\Api\FaceReconstructController;
 use App\Http\Controllers\API\LikeController;
 use App\Http\Controllers\API\PostController;
 use App\Http\Controllers\API\GoogleAuthController;
@@ -102,7 +103,8 @@ Route::middleware(['auth:sanctum', 'role:doctor'])->group(function () {
     Route::post('/face-recognation', [FaceRecogController::class, 'store']);
     Route::post('/deep-fake', [DeepFakeController::class, 'store']);
     Route::post('/dna-analysis', [DnaController::class, 'processSequence']);
-    Route::post('/face-reconstruct', [FacePredictionController::class, 'processFace']);
+    Route::post('/face-reconstruct', [FaceReconstructController::class, 'store']);
+    // Route::post('/face-reconstruct', [FacePredictionController::class, 'processFace']);
 
     // chat
     Route::get('/chat', [ChatController::class, 'getConversations']);
