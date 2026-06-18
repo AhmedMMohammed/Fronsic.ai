@@ -27,8 +27,10 @@ class FaceRecogController extends Controller {
                 file_get_contents( public_path( $imageName ) ),
                 $imageName
             )
-            ->post( 'https://anastamer-deepface-communicated.hf.space/recognize' );
+            ->post( 'https://anastamer-deepface-project.hf.space/recognize' );
             $data = $response->json();
+
+
             if ( !$response->successful() ) {
 
                 if ( isset( $data[ 'detail' ] ) ) {
@@ -41,6 +43,7 @@ class FaceRecogController extends Controller {
                     'error' => $data
                 ], 500 );
             }
+
             $model = model_ai::create( [
                 'models'=>'face recognation'
             ] );
@@ -51,7 +54,7 @@ class FaceRecogController extends Controller {
                 'model_used'=>$model->models,
                 'data'    => [
                     'phenotypes'  => [
-                        'name' => $data[ 'identities' ][ 0 ],
+                        'fake recognation analysis' => $data,
                         'image' => $imageName
                         ? asset( $imageName )
                         : null, ] ]

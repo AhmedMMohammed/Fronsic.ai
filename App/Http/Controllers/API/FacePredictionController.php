@@ -29,14 +29,11 @@ class FacePredictionController extends Controller {
         if ( !$aiResponse || !isset( $aiResponse[ 'enhanced_image_base64' ] ) ) {
             return response()->json( [
                 'status'  => 'error',
-                'message' => 'AI reconstruction failed or model does not found any person in image.'
+                'message' => 'AI reconstruction does not found any person in image.'
             ], 500 );
         }
 
         $face = $aiResponse[ 'faces' ][ 0 ] ?? null;
-
-        $age    = $face[ 'age_info' ][ 'age_range' ] ?? 'Unknown';
-        $gender = $face[ 'gender_info' ][ 'gender' ] ?? 'Unknown';
 
         try {
             $base64String = $aiResponse[ 'enhanced_image_base64' ];
@@ -68,8 +65,7 @@ class FacePredictionController extends Controller {
 
             'data'    => [
                 'phenotypes'  => [
-                    'age'       => $age,
-                    'gender'    => $gender,
+                   'face reconstruction analysis' =>$face,
                     'image_url' => asset( 'storage/' . $fileName ),
                 ]
             ]

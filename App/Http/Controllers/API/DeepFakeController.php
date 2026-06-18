@@ -50,11 +50,7 @@ class DeepFakeController extends Controller {
                 ], 500 );
             }
 
-            if ( $data[ 'faces' ][ 0 ][ 'is_real' ] ) {
-                $status = 'real';
-            } else {
-                $status = 'fake';
-            }
+
 
             $model = model_ai::create( [
                 'models'=>'deep fake'
@@ -66,7 +62,7 @@ class DeepFakeController extends Controller {
                     'phenotypes'  => [
                         'model_used'=>$model->models,
                         'message'=>' success discover image    ',
-                        'status'=>$status,
+                        'Deep fake analysis'=>$data,
                         'image' => $imageName
                         ? asset( $imageName )
                         : null, ] ]

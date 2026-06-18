@@ -73,7 +73,7 @@ class AuthController extends Controller {
         ] );
     }
     public function register( Request $request ) {
-        
+
         $validatedData = validator( $request->all(), [
             'name' => 'required|string',
             'email' => 'required|email|unique:users',
@@ -139,7 +139,7 @@ class AuthController extends Controller {
 
         $otp = rand( 100000, 999999 );
 
-        Cache::put( 'reset_otp_' . $request->email, $otp, now()->addSeconds( 60 ) );
+        Cache::put( 'reset_otp_' . $request->email, $otp, now()->addSeconds( 120 ) );
         Mail::to( $request->email )->send( new ResetPasswordOtpMail( $otp ) );
 
         return response()->json( [

@@ -33,7 +33,6 @@ Route::post('/register', [AuthController::class, 'register']);
 Route::post('/password/forgot', [AuthController::class, 'sendResetCode']);
 Route::post('/password/verify-code', [AuthController::class, 'verifyCode']);
 Route::post('/password/reset', [AuthController::class, 'resetPassword']);
-Route::post('/logout', [AuthController::class, 'logout']);
 Route::post('/auth/google/callback', [GoogleAuthController::class, 'handleGoogleLogin']);
 
 Route::middleware(['auth:sanctum'])->group(function () {
@@ -103,7 +102,6 @@ Route::middleware(['auth:sanctum', 'role:doctor'])->group(function () {
     Route::post('/face-recognation', [FaceRecogController::class, 'store']);
     Route::post('/deep-fake', [DeepFakeController::class, 'store']);
     Route::post('/dna-analysis', [DnaController::class, 'processSequence']);
-    Route::post('/face-reconstruct', [FaceReconstructController::class, 'store']);
     Route::post('/face-reconstructs', [FacePredictionController::class, 'processFace']);
 
     // chat
@@ -146,6 +144,8 @@ Route::middleware(['auth:sanctum', 'role:doctor'])->group(function () {
     // comments
     Route::delete('/delete-comment/{id}', [CommentController::class, 'destroy']);
     Route::put('/update-comment/{id}', [CommentController::class, 'update']);
+
+    Route::post('/logout', [AuthController::class, 'logout']);
 
 });
 
