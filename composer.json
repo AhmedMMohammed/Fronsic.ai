@@ -61,8 +61,7 @@
             "@php artisan route:clear",
             "@php artisan config:clear",
             "@php artisan cache:clear",
-            "@php artisan view:clear",
-            "composer dump-autoload"
+            "@php artisan view:clear"
         ],
         "dev": [
             "Composer\\Config::disableProcessTimeout",
