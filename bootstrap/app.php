@@ -5,7 +5,6 @@ use Illuminate\Foundation\Application;
 use Illuminate\Foundation\Configuration\Exceptions;
 use Illuminate\Foundation\Configuration\Middleware;
 
-// 1. وضع التطبيق في متغير بدلاً من عمل return مباشر
 $app = Application::configure(basePath: dirname(__DIR__))
     ->withRouting(
         web: __DIR__.'/../routes/web.php',
@@ -22,8 +21,6 @@ $app = Application::configure(basePath: dirname(__DIR__))
         //
     })->create();
 
-// 2. إجبار لارافيل على قراءة مجلد App بالحرف الكبير
 $app->useAppPath($app->basePath('App'));
 
-// 3. إرجاع التطبيق بعد التعديل
 return $app;
