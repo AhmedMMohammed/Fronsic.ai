@@ -54,7 +54,7 @@ class AuthController extends Controller {
         }
         $imagePath = null;
         if ( $request->hasFile( 'image' ) ) {
-                $imagePath = $request->file( 'image' )->store( 'posts', 'public' );
+                $imagePath = $request->file( 'image' )->store( 'users', 'public' );;
         }
 
         $user->update( [
@@ -140,6 +140,7 @@ class AuthController extends Controller {
         $otp = rand( 100000, 999999 );
 
         Cache::put( 'reset_otp_' . $request->email, $otp, now()->addSeconds( 120 ) );
+
         Mail::to( $request->email )->send( new ResetPasswordOtpMail( $otp ) );
 
         return response()->json( [
@@ -183,6 +184,14 @@ class AuthController extends Controller {
             'password' => 'required|min:8|confirmed'
         ] );
 
+        $cachedOtp = Cache::get( 'reset_otp_' . $request->email );
+
+        if ( !$cachedOtp ) {
+            return response()->json( [
+                'status' => 0,
+                'msg' => 'Code has expired. Please request a new one.'
+            ], 400 );
+        }
 
         $user = User::where( 'email', $request->email )->first();
         $user->update( [
@@ -198,7 +207,8 @@ class AuthController extends Controller {
     }
 
     public function logout(Request $request){
-        Auth::logout();
+
+        $request->user()->tokens()->delete();
         return response()->json([
             'status' => 1,
             'msg' => 'Logout successfully.'

@@ -11,7 +11,6 @@ return new class extends Migration
         Schema::create('evidences', function (Blueprint $table) {
             $table->id();
             $table->string('name');
-            $table->string('model_used');
             $table->json('data')->nullable();
             $table->foreignId('case_id')->constrained('use_cases')->cascadeOnNull();
             $table->timestamps();

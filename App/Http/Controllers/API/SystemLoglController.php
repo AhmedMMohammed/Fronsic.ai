@@ -9,7 +9,7 @@ use Illuminate\Support\Facades\Auth;
 use Symfony\Component\HttpFoundation\JsonResponse;
 
 class SystemLoglController extends Controller {
-    public function store( $user_id,  $massage ): JsonResponse {
+    public function store($massage ): JsonResponse {
         $user = Auth::user();
         $name = $user->name;
         $systemlog = SystemLog::create( [

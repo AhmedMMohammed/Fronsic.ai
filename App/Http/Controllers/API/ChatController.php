@@ -24,10 +24,9 @@ class ChatController extends Controller {
         return response()->json( [ 'data' => $conversations ] );
     }
 
-    public function getMessages( $conversation ) {
+    public function getMessages( $conversation_id ) {
 
-
-        $Conversation = Conversation::where( 'user_id', Auth::id() )->find($conversation );
+        $Conversation = Conversation::where( 'user_id', Auth::id() )->find($conversation_id );
         if ( !$Conversation ) {
             return response()->json( [
                 'status' => false,
@@ -35,7 +34,7 @@ class ChatController extends Controller {
             ] );
         }
 
-        $messages = $conversation->messages()->orderBy( 'created_at', 'asc' )->get();
+        $messages = $Conversation->messages()->orderBy( 'created_at', 'asc' )->get();
         return response()->json( [ 'data' => $messages ] );
     }
 

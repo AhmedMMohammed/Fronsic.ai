@@ -14,7 +14,6 @@ class EvidenceController extends Controller {
     public function store( Request $request ): JsonResponse {
         $request->validate( [
             'name'       => 'required|string|max:255',
-            'model_used' => 'required|string',
             'case_id'    => 'required|exists:use_cases,id',
             'data'       => 'required|array',
         ] );
@@ -24,7 +23,6 @@ class EvidenceController extends Controller {
         }
         $evidence = $case->evidences()->create( [
             'name'       => $request->name,
-            'model_used' => $request->model_used,
             'case_id'    => $request->case_id,
             'data'       => $request->data,
         ] );

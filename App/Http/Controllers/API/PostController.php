@@ -11,8 +11,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use App\Http\Resources\PostResource;
 use App\Models\Comment;
-use Dotenv\Validator;
-use Illuminate\Support\Facades\Validator as FacadesValidator;
+use Illuminate\Support\Facades\Storage;
 
 class PostController extends Controller {
 
@@ -152,8 +151,12 @@ class PostController extends Controller {
         //         'post_id' => $post_id,
         //         'user_id' => Auth::id(),
         //         'ip' => $request->ip()
-        //     ] );
+        // ] );
         // }
+        $result = $this->validateRouteType( $post_id, 'sharefeed', $request->route()->getName() );
+        if ( $result ) {
+            return $result;
+        }
 
         return response()->json( [
             'status'  => true,
@@ -164,7 +167,10 @@ class PostController extends Controller {
 
     public function show( $id, Request $request ) {
         $userId = Auth::id();
-
+        $result = $this->validateRouteType( $id, 'viewfeed', $request->route()->getName() );
+        if ( $result ) {
+            return $result;
+        }
         $view = View::where( 'post_id', $id )->where( 'user_id', Auth::id() )->first();
         if ( !$view ) {
             // add view
@@ -192,18 +198,15 @@ class PostController extends Controller {
         return response()->json( [
             'status'  => true,
             'data'    => $data,
-            'comments' => CommentResource::collection( $comments )
         ] );
     }
 
     public function update( Request $request, $id ) {
 
         $post = Post::where( 'user_id', Auth::id() )->find( $id );
-        if ( !$post ) {
-            return response()->json( [
-                'status' => false,
-                'message' => 'errore ! item not found'
-            ] );
+        $result = $this->validateRouteType( $id, 'updatefeed', $request->route()->getName() );
+        if ( $result ) {
+            return $result;
         }
         if ( $post->type == 'feeds' ) {
             $request->validate( [
@@ -234,30 +237,59 @@ class PostController extends Controller {
         ] );
     }
 
-    public function destroy( $id ) {
+    public function destroy( Request $request, $id ) {
         if ( Auth::user()->role == 'admin' ) {
             $post = Post::find( $id );
-            $systemlog= new SystemLoglController();
-            if ( $post->type == 'feeds' ) {
-                $massage='Admin'.Auth::user()->name.'delete Feed ';
-            } else {
-                $massage='Admin'.Auth::user()->name.'delete Article ';
+            if ( !$post ) {
+                return response()->json( [ 'status' => false, 'message' => 'error ! item is not found ' ], 403 );
             }
-            $systemlog->store(Auth::id(), $massage);
-        }else {
+            $systemlog = new SystemLoglController();
+            $massage = 'Admin '.Auth::user()->name.'delete this '.$post->type ." where id : " .$post->id;
+            $systemlog->store( $massage );
+        } else {
             $post = Post::where( 'user_id', Auth::id() )->find( $id );
-        }
-        if ( !$post ) {
-            return response()->json( [
-                'status' => false,
-                'message' => 'errore ! item not found'
-            ] );
+            $result = $this->validateRouteType( $id, 'deletefeed', $request->route()->getName() );
+            if ( $result ) {
+                return $result;
+            }
         }
         $post->comments()->delete();
+        if ($post->image && Storage::disk('public')->exists($post->image)) {
+            Storage::disk('public')->delete($post->image);
+        }
+
         $post->delete();
+
         return response()->json( [
             'status' => true,
             'message' => ' deleted successfully',
         ] );
+    }
+
+    public function validateRouteType( $post_id, $routeName, $route ) {
+        $post = Post::find( $post_id );
+
+        if ( !$post ) {
+            return response()->json( [
+                'status' => false,
+                'message' => 'item not found'
+            ], 404 );
+        }
+
+        if ( $route === $routeName && $post->type !== 'feeds' ) {
+            return response()->json( [
+                'status' => false,
+                'message' => 'Error! This is not a feed '
+            ], 400 );
+        }
+
+        if ( $route !== $routeName && $post->type === 'feeds' ) {
+            return response()->json( [
+                'status' => false,
+                'message' => 'Error! This is not an article'
+            ], 400 );
+        }
+
+        return null;
     }
 }

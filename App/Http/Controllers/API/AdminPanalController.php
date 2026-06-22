@@ -54,7 +54,6 @@ class AdminPanalController extends Controller {
     public function doctors() {
         $doctors = User::where( 'role', 'doctor' )->select( 'id', 'name', 'national_id', 'created_at', 'status' )
         ->paginate( 10 );
-
         return response()->json( [
             'status' => true,
             'data' => $doctors
@@ -74,7 +73,7 @@ class AdminPanalController extends Controller {
         ] )->find( $id );
 
         $cases = UseCase::where( 'user_id', $id )
-        ->select( 'id', 'user_id', 'status', 'created_at' )
+        ->select( 'id', 'user_id','name', 'status', 'created_at' )
         ->withCount( 'evidences' )
         ->paginate( 5, [ '*' ], 'cases_page' );
 
@@ -93,6 +92,7 @@ class AdminPanalController extends Controller {
                     'image' => $doctor->image,
                     'email' => $doctor->email,
                     'national_id' => $doctor->national_id,
+                    'status' => $doctor->status,
                     'total_cases' => $doctor->total_cases,
                     'total_articles' => $doctor->total_articles,
                 ],
@@ -106,10 +106,11 @@ class AdminPanalController extends Controller {
 
     public function assignAdmin( $id ) {
         $doctor = User::find( $id );
+
         if ( $doctor->role == 'doctor' ) {
             $systemlog = new SystemLoglController();
-            $massage = 'admin'. Auth::user()->name.' assign'.$doctor->name.' admin';
-            $systemlog->store( Auth::id(), $massage );
+            $massage = 'admin'. Auth::user()->name.' assign '.$doctor->name.' admin';
+            $systemlog->store( $massage );
             $doctor->role = 'admin';
             $doctor->save();
             return response()->json( [
@@ -129,7 +130,7 @@ class AdminPanalController extends Controller {
     */
 
     public function casesAudit() {
-        $cases = UseCase::select( 'id', 'user_id', )->with( [ 'user:id,name' ] )
+        $cases = UseCase::select( 'id', 'user_id','name','status' )->with( [ 'user:id,name' ] )
         ->withCount( 'evidences' )
         ->latest()
         ->paginate( 10 );
@@ -203,8 +204,8 @@ class AdminPanalController extends Controller {
         ] );
         $user->save();
         $systemlog = new SystemLoglController();
-        $massage = 'admin'. Auth::user()->name.' Make this user '.$user->name.' an '.$newStatus;
-        $systemlog->store( Auth::id(), $massage );
+        $massage = 'admin '. Auth::user()->name.' Make this user '.$user->name.' an '.$newStatus;
+        $systemlog->store($massage );
         $message = ( $newStatus === 'active' ) ? 'active now' : 'block now';
 
         return response()->json( [
@@ -249,11 +250,6 @@ class AdminPanalController extends Controller {
         ->groupBy( 'models' )
         ->get();
 
-        $securityLogs = DB::table( 'activity_log' )
-        ->whereBetween( 'created_at', [ $startOfMonth, $endOfMonth ] )
-        ->latest()
-        ->take( 50 )
-        ->get();
 
         $communityStats = [
             'articles' => Post::where( 'type', 'article' )->whereBetween( 'created_at', [ $startOfMonth, $endOfMonth ] )->count(),
@@ -271,7 +267,6 @@ class AdminPanalController extends Controller {
                 'user_activity' => $userActivity,
                 'case_statistics' => $caseStats,
                 'ai_performance' => $aiPerformance,
-                'security_logs' => $securityLogs,
                 'community_engagement' => $communityStats
             ]
         ] );

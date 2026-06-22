@@ -14,13 +14,13 @@ class LikeController extends Controller
     public function toggle(Request $request,$post_id)
     {
 
-       $post = Post::find($post_id );
-        if(!$post){
-            return response()->json([
-                'status' => false,
-                'message' => 'Post not found'
-            ]);
+        $post = Post::find($post_id );
+        $controller=new PostController();
+        $result = $controller->validateRouteType($post_id,"likefeed",$request->route()->getName());
+        if ( $result ) {
+            return $result;
         }
+
 
         $like = Like::where('post_id',$post_id)
             ->where('user_id', Auth::id())

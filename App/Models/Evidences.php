@@ -11,7 +11,6 @@ class Evidences extends Model {
 
     protected $fillable = [
         'name',
-        'model_used',
         'data',
         'case_id'
     ];

@@ -35,8 +35,14 @@ Route::post('/password/verify-code', [AuthController::class, 'verifyCode']);
 Route::post('/password/reset', [AuthController::class, 'resetPassword']);
 Route::post('/auth/google/callback', [GoogleAuthController::class, 'handleGoogleLogin']);
 
+
+Route::get('view-article/{post_id}', [PostController::class, 'show']);
+Route::get('view-feeds/{post_id}', [PostController::class, 'show'])->name("viewfeed");
+
 Route::middleware(['auth:sanctum'])->group(function () {
     Route::apiResource('contacts', ContactController::class);
+    Route::post('/logout', [AuthController::class, 'logout']);
+
 });
 
 
@@ -48,7 +54,7 @@ Route::middleware(['auth:sanctum', 'role:admin'])->group(function () {
     Route::get('admin/doctors', [AdminPanalController::class, 'doctors']);
 
     // 3. Doctor Profile Page (With Modals Data)
-    Route::get('admin/doctors/{id}', [AdminPanalController::class, 'doctorProfile']);
+    Route::get('admin/profile/doctors/{id}', [AdminPanalController::class, 'doctorProfile']);
 
     // 4. Case Audit Page
     Route::get('admin/cases', [AdminPanalController::class, 'casesAudit']);
@@ -115,9 +121,9 @@ Route::middleware(['auth:sanctum', 'role:doctor'])->group(function () {
 
     // setting
     Route::get('/setting', [UserController::class, 'me']);
-    Route::post('/upload/image-user', [AuthController::class, 'uploadImage']);
     Route::post('/change-password', [AuthController::class, 'changePassword']);
-    Route::post('/save-change', [AuthController::class, 'ChangeData']);
+    Route::put('/save-change', [UserController::class, 'update']);
+
 
     //community
     Route::get('/feed', [PostController::class, 'feed']);
@@ -126,26 +132,23 @@ Route::middleware(['auth:sanctum', 'role:doctor'])->group(function () {
     Route::post('add/new-article', [PostController::class, 'store']);
     Route::post('update-article/{post_id}', [PostController::class, 'update']);
     Route::delete('delete-article/{post_id}', [PostController::class, 'destroy']);
-    Route::get('view-article/{post_id}', [PostController::class, 'show']);
     Route::get('share-article/{post_id}', [PostController::class, 'share']);
     Route::post('/add-comments-article/{post_id}', [CommentController::class, 'store']);
     Route::post('/toggle-like/article/{post_id}', [LikeController::class, 'toggle']);
 
     // feed
-    Route::post('add/new-feed', [PostController::class, 'storefeed']);
-    Route::post('update-feed/{post_id}', [PostController::class, 'update']);
-    Route::delete('delete-feed/{post_id}', [PostController::class, 'destroy']);
-    Route::get('view-feed/{post_id}', [PostController::class, 'show']);
-    Route::get('share-feed/{post_id}', [PostController::class, 'share']);
-    Route::post('/add-comments-feed/{post_id}', [CommentController::class, 'store']);
-    Route::post('/toggle-like/feed/{post_id}', [LikeController::class, 'toggle']);
+    Route::post('add/new-feed', [PostController::class, 'storefeed'])->name('addfeed');
+    Route::post('update-feed/{post_id}', [PostController::class, 'update'])->name('updatefeed');
+    Route::delete('delete-feed/{post_id}', [PostController::class, 'destroy'])->name('deletefeed');
+    Route::get('share-feed/{post_id}', [PostController::class, 'share'])->name("sharefeed");
+    Route::post('/add-comments-feed/{post_id}', [CommentController::class, 'store'])->name("add_commentfeed");
+    Route::post('/toggle-like/feed/{post_id}', [LikeController::class, 'toggle'])->name("likefeed");
 
 
     // comments
     Route::delete('/delete-comment/{id}', [CommentController::class, 'destroy']);
     Route::put('/update-comment/{id}', [CommentController::class, 'update']);
 
-    Route::post('/logout', [AuthController::class, 'logout']);
+    });
 
-});
 

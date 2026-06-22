@@ -13,6 +13,11 @@ class CommentController extends Controller {
         $request->validate( [
             'comment' => 'required|string|max:1000'
         ] );
+        $controller=new PostController();
+        $result = $controller->validateRouteType($post_id,"add_commentfeed",$request->route()->getName());
+        if ( $result ) {
+            return $result;
+        }
         $comment = Comment::create( [
             'post_id' => $post_id,
             'user_id' => Auth::id(),
@@ -28,8 +33,8 @@ class CommentController extends Controller {
         if ( Auth::user()->role == 'admin' ) {
             $comment = Comment::find( $id );
             $systemlog= new SystemLoglController();
-            $massage=Auth::user()->name.'  admin delete comment';
-            $systemlog->store(Auth::id(), $massage);
+            $massage=Auth::user()->name.'  admin delete comment thid comment '.'{ '.$comment->comment." } .";
+            $systemlog->store($massage);
         }else {
             $comment = Comment::where( 'user_id', Auth::id() )->find( $id );
         }

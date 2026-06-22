@@ -46,9 +46,9 @@
         </div>
 
         <div class="bg-cardBg p-5 rounded-lg border border-gray-700 shadow-lg flex flex-col md:flex-row gap-4 items-end">
-            <div class="flex-1 w-full" style="display: none;" >
+            <div class="flex-1 w-full" style="display: none;">
                 <label class="block text-sm text-gray-400 mb-1">Base URL</label>
-                <input type="text" id="baseUrl" value="https://fronsicai-production-6288.up.railway.app/" oninput="updateAllUrls()" class="w-full bg-darkBg border border-gray-600 rounded p-2 text-white outline-none focus:border-primary">
+                <input type="text" id="baseUrl" value="http://fronsicai-production-6288.up.railway.appy/"  oninput="updateAllUrls()" class="w-full bg-darkBg border border-gray-600 rounded p-2 text-white outline-none focus:border-primary">
             </div>
             <div class="flex-1 w-full">
                 <label class="block text-sm text-gray-400 mb-1">Authorization (Bearer Token)</label>
@@ -71,11 +71,8 @@
             { method: 'POST', path: 'api/login', title: 'User Login', group: 'Authentication', bodyType: 'json', fields: [{name: 'email', type: 'email'}, {name: 'password', type: 'password'}] },
             { method: 'POST', path: 'api/logout', title: 'Logout', group: 'Authentication', bodyType: 'json', fields: [] },
             { method: 'POST', path: 'api/password/forgot', title: 'Forgot Password', group: 'Authentication', bodyType: 'json', fields: [{name: 'email', type: 'email'}] },
-            { method: 'POST', path: 'api/password/verify-code', title: 'Verify Code', group: 'Authentication', bodyType: 'json', fields: [{name: 'otp', type: 'number'}] },
+            { method: 'POST', path: 'api/password/verify-code', title: 'Verify Code', group: 'Authentication', bodyType: 'json', fields: [{name: 'otp', type: 'number'},{name: 'email', type: 'email'}] },
             { method: 'POST', path: 'api/password/reset', title: 'Reset Password', group: 'Authentication', bodyType: 'json', fields: [{name: 'email', type: 'email'}, {name: 'otp', type: 'number'}, {name: 'password', type: 'password'}, {name: 'password_confirmation', type: 'password'}] },
-            { method: 'GET', path: 'api/setting', title: 'User Settings', group: 'Authentication', hasParams: false },
-            { method: 'POST', path: 'api/save-change', title: 'Save Profile Changes', group: 'Authentication', bodyType: 'json', fields: [{name: 'name', type: 'text'}, {name: 'email', type: 'email'},{name: 'phone_number', type: 'text'}, {name: 'date_of_birth', type: 'date'}, {name: 'national_id', type: 'text'}, {name: 'image', type: 'file'}] },
-            { method: 'POST', path: 'api/change-password', title: 'Change Password', group: 'Authentication', bodyType: 'json', fields: [{name: 'password', type: 'password'}, {name: 'new_password', type: 'password'}, {name: 'new_password_confirmation', type: 'password'}] },
 
             // --- 2. Doctor Hub ---
             { method: 'GET', path: 'api/doctor/dashboard', title: 'Doctor Dashboard', group: 'Doctor Hub', hasParams: false },
@@ -86,33 +83,33 @@
 
             // --- 3. Use Cases ---
             { method: 'GET', path: 'api/all-cases', title: 'All Cases', group: 'Use Cases', bodyType: 'json', fields: [] },
-            { method: 'POST', path: 'api/use-case', title: 'Add Use Case', group: 'Use Cases', bodyType: 'json', fields: [{name: 'name', type: 'text'}, {name: 'description', type: 'text'}, {name: 'user_id', type: 'number'}] },
+            { method: 'POST', path: 'api/add/use-case', title: 'Add Use Case', group: 'Use Cases', bodyType: 'json', fields: [{name: 'name', type: 'text'}, {name: 'description', type: 'text'} ] },
             { method: 'GET', path: 'api/show/use-case/{id}', title: 'Show Use Case', group: 'Use Cases', hasParams: true, params: ['id'] },
             { method: 'PUT', path: 'api/update/use-case/{id}', title: 'Update Use Case', group: 'Use Cases', hasParams: true, params: ['id'], bodyType: 'json', fields: [{name: 'name', type: 'text'}, {name: 'description', type: 'text'}] },
             { method: 'DELETE', path: 'api/delete/use-case/{id}', title: 'Delete Use Case', group: 'Use Cases', hasParams: true, params: ['id'] },
             { method: 'GET', path: 'api/toggle-active/use-case/{id}', title: 'Toggle Active Use Case', group: 'Use Cases', hasParams: true, params: ['id'] },
 
             // --- 4. Evidence ---
-            { method: 'POST', path: 'api/save-as-evidence', title: 'Save As Evidence', group: 'Evidence', bodyType: 'json', fields: [{name: 'name', type: 'text'}, {name: 'model_used', type: 'text'}, {name: 'case_id', type: 'number'}, {name: 'data', type: 'text'}] },
+            { method: 'POST', path: 'api/save-as-evidence', title: 'Save As Evidence', group: 'Evidence', bodyType: 'json', fields: [{name: 'name', type: 'text'},{name: 'case_id', type: 'number'}, {name: 'data', type: 'text'}] },
             { method: 'PUT', path: 'api/update-evidence/{id}/use-case/{usecaseId}', title: 'Update Evidence', group: 'Evidence', hasParams: true, params: ['id', 'usecaseId'], bodyType: 'json', fields: [{name: 'name', type: 'text'}] },
             { method: 'DELETE', path: 'api/delete-evidence/{id}/use-case/{usecaseId}', title: 'Delete Evidence', group: 'Evidence', hasParams: true, params: ['id', 'usecaseId'] },
 
             // --- 5. Feed & Articles ---
             { method: 'GET', path: 'api/feed', title: 'Get All Feeds', group: 'Feed & Articles', hasParams: false },
             { method: 'POST', path: 'api/add/new-article', title: 'Add New Article', group: 'Feed & Articles', bodyType: 'formdata', fields: [{name: 'title', type: 'text'}, {name: 'content', type: 'text'}, {name: 'image', type: 'file'}] },
-            { method: 'PUT', path: 'api/update-article/{id}', title: 'Update Article', group: 'Feed & Articles', hasParams: true, params: ['id'], bodyType: 'formdata', fields: [{name: 'title', type: 'text'}, {name: 'content', type: 'text'}, {name: 'image', type: 'file'}] },
+            { method: 'POST', path: 'api/update-article/{id}', title: 'Update Article', group: 'Feed & Articles', hasParams: true, params: ['id'], bodyType: 'formdata', fields: [{name: 'title', type: 'text'}, {name: 'content', type: 'text'}, {name: 'image', type: 'file'}] },
             { method: 'DELETE', path: 'api/delete-article/{id}', title: 'Delete Article', group: 'Feed & Articles', hasParams: true, params: ['id'] },
             { method: 'GET', path: 'api/share-article/{id}', title: 'Share Article', group: 'Feed & Articles', hasParams: true, params: ['id'] },
             { method: 'POST', path: 'api/add-comments-article/{id}', title: 'Add Comment (Article)', group: 'Feed & Articles', hasParams: true, params: ['id'], bodyType: 'json', fields: [{name: 'comment', type: 'text'}] },
             { method: 'POST', path: 'api/toggle-like/article/{id}', title: 'Toggle Like (Article)', group: 'Feed & Articles', hasParams: true, params: ['id'], bodyType: 'json', fields: [] },
             { method: 'GET', path: 'api/view-article/{id}', title: 'View Article', group: 'Feed & Articles', hasParams: true, params: ['id'] },
 
-            { method: 'POST', path: 'api/add/new-feed', title: 'Add New Feed', group: 'Feed & Articles', bodyType: 'formdata', fields: [{name: 'title', type: 'text'}, {name: 'content', type: 'text'}] },
-            { method: 'PUT', path: 'api/update-feed/{id}', title: 'Update Feed', group: 'Feed & Articles', hasParams: true, params: ['id'], bodyType: 'formdata', fields: [{name: 'title', type: 'text'}, {name: 'content', type: 'text'}] },
+            { method: 'POST', path: 'api/add/new-feed', title: 'Add New Feed', group: 'Feed & Articles', bodyType: 'formdata', fields: [{name: 'content', type: 'text'}] },
+            { method: 'POST', path: 'api/update-feed/{id}', title: 'Update Feed', group: 'Feed & Articles', hasParams: true, params: ['id'], bodyType: 'formdata', fields: [{name: 'content', type: 'text'}] },
             { method: 'DELETE', path: 'api/delete-feed/{id}', title: 'Delete Feed', group: 'Feed & Articles', hasParams: true, params: ['id'] },
             { method: 'GET', path: 'api/share-feed/{id}', title: 'Share Feed', group: 'Feed & Articles', hasParams: true, params: ['id'] },
             { method: 'POST', path: 'api/toggle-like/feed/{id}', title: 'Toggle Like (Feed)', group: 'Feed & Articles', hasParams: true, params: ['id'], bodyType: 'json', fields: [] },
-            { method: 'GET', path: 'api/view-feed/{id}', title: 'View Feed', group: 'Feed & Articles', hasParams: true, params: ['id'] },
+            { method: 'GET', path: 'api/view-feeds/{id}', title: 'View Feed', group: 'Feed & Articles', hasParams: true, params: ['id'] },
             { method: 'POST', path: 'api/add-comments-feed/{id}', title: 'Add Comment (Feed)', group: 'Feed & Articles', hasParams: true, params: ['id'], bodyType: 'json', fields: [{name: 'comment', type: 'text'}] },
             { method: 'PUT', path: 'api/update-comment/{id}', title: 'Update Comment', group: 'Feed & Articles', hasParams: true, params: ['id'], bodyType: 'json', fields: [{name: 'comment', type: 'text'}] },
             { method: 'DELETE', path: 'api/delete-comment/{id}', title: 'Delete Comment', group: 'Feed & Articles', hasParams: true, params: ['id'] },
@@ -120,18 +117,23 @@
             // --- 6. Chat ---
             { method: 'GET', path: 'api/conversations/{id}/messages', title: 'Conversation Messages', group: 'Chat System', hasParams: true, params: ['id'] },
             { method: 'GET', path: 'api/chat', title: 'Get Chats', group: 'Chat System', hasParams: false },
-            { method: 'POST', path: 'api/chat/send', title: 'Send Message', group: 'Chat System', bodyType: 'json', fields: [{name: 'query', type: 'text'}] },
+            { method: 'POST', path: 'api/chat/send', title: 'Send Message', group: 'Chat System', bodyType: 'json', fields: [{name: 'query', type: 'text'},{name: 'conversation_id', type: 'number'}] },
 
             // --- 7. AI Models ---
             { method: 'POST', path: 'api/dna-analysis', title: 'DNA Analysis', group: 'AI Forensic Models', isDnaAnalysis: true },
-            { method: 'POST', path: 'api/deep-fake/analyze', title: 'Deep Fake Analyze', group: 'AI Forensic Models', bodyType: 'formdata', fields: [{name: 'image', type: 'file'}] },
+            { method: 'POST', path: 'api/deep-fake', title: 'Deep Fake Analyze', group: 'AI Forensic Models', bodyType: 'formdata', fields: [{name: 'image', type: 'file'}] },
             { method: 'POST', path: 'api/face-recognation', title: 'Face Recognition', group: 'AI Forensic Models', bodyType: 'json', fields: [{name: 'image', type: 'file'}]  },
             { method: 'POST', path: 'api/face-reconstructs', title: 'Face Reconstructs', group: 'AI Forensic Models', bodyType: 'formdata', fields: [{name: 'image', type: 'file'}] },
 
-            // --- 8. Admin Panel ---
+            // --- 8. user setting ---
+            { method: 'GET', path: 'api/setting', title: 'User Settings', group: 'User Setting', hasParams: false },
+            { method: 'PUT', path: 'api/save-change', title: 'Save Profile Changes', group: 'User Setting', bodyType: 'json', fields: [{name: 'first_name', type: 'text'},{name: 'last_name', type: 'text'}, {name: 'email', type: 'email'},{name: 'phone_number', type: 'text'}, {name: 'date_of_birth', type: 'date'}, {name: 'national_id', type: 'text'},{name: 'image', type: 'file'}] },
+            { method: 'POST', path: 'api/change-password', title: 'Change Password', group: 'User Setting', bodyType: 'json', fields: [{name: 'current_password', type: 'password'}, {name: 'new_password', type: 'password'}, {name: 'new_password_confirmation', type: 'password'}] },
+
+            // --- 9. Admin Panel ---
             { method: 'GET', path: 'api/admin/dashboard', title: 'Admin Dashboard Data', group: 'Admin Panel', hasParams: false },
             { method: 'GET', path: 'api/admin/doctors', title: 'Get All Doctors', group: 'Admin Panel', hasParams: false },
-            { method: 'GET', path: 'api/admin/doctors/{id}', title: 'Doctor Profile Data', group: 'Admin Panel', hasParams: true, params: ['id'] },
+            { method: 'GET', path: 'api/admin/profile/doctors/{id}', title: 'Doctor Profile Data', group: 'Admin Panel', hasParams: true, params: ['id'] },
             { method: 'GET', path: 'api/admin/cases', title: 'Cases Audit', group: 'Admin Panel', hasParams: false },
             { method: 'GET', path: 'api/admin/community', title: 'Community Management', group: 'Admin Panel', hasParams: false },
             { method: 'GET', path: 'api/admin/chat-mangement', title: 'Chat Management', group: 'Admin Panel', hasParams: false },
@@ -201,12 +203,12 @@
 
                             <div id="tab-content-seq-${index}" class="block">
                                 <label class="block text-sm text-gray-400 mb-1">Sequence Data Input:</label>
-                                <textarea id="dna-seq-${index}" rows="4" class="w-full bg-cardBg border border-gray-600 rounded p-2 text-white outline-none focus:border-primary" placeholder="Paste DNA sequences or allele values here..."></textarea>
+                                <textarea name"sequance" id="dna-seq-${index}" rows="4" class="w-full bg-cardBg border border-gray-600 rounded p-2 text-white outline-none focus:border-primary" placeholder="Paste DNA sequences or allele values here..."></textarea>
                             </div>
 
                             <div id="tab-content-file-${index}" class="hidden">
                                 <label class="block text-sm text-gray-400 mb-1">DNA File Upload:</label>
-                                <input type="file" id="dna-file-${index}" class="w-full text-gray-400 file:mr-4 file:py-2 file:px-4 file:rounded file:border-0 file:text-sm file:font-semibold file:bg-primary file:text-darkBg hover:file:bg-blue-400">
+                                <input type="file" name="file" id="dna-file-${index}" class="w-full text-gray-400 file:mr-4 file:py-2 file:px-4 file:rounded file:border-0 file:text-sm file:font-semibold file:bg-primary file:text-darkBg hover:file:bg-blue-400">
                             </div>
                         </div>
                     `;
@@ -301,10 +303,12 @@
             }
         }
 
-        // Dynamic Request Executor Engine
+  // Dynamic Request Executor Engine (Optimized for Laravel Backend)
+// Dynamic Request Executor Engine (Optimized for Laravel Backend & DNA Analysis)
         async function executeRequest(index) {
             const ep = endpoints[index];
-            const baseUrl = document.getElementById('baseUrl').value;
+            // تنظيف الـ baseUrl لضمان عدم وجود Slash زائدة في النهاية
+            const baseUrl = document.getElementById('baseUrl').value.replace(/\/$/, "");
             const token = document.getElementById('globalToken').value;
             const responseBox = document.getElementById(`response-${index}`);
             const statusBox = document.getElementById(`status-${index}`);
@@ -313,17 +317,20 @@
             statusBox.textContent = "WAITING";
             statusBox.className = "ml-2 px-2 py-0.5 rounded text-xs font-bold bg-yellow-600 text-white";
 
-            // Construct Final URL
-            let finalUrl = baseUrl + ep.path;
+            // 1. بناء مسار الرابط النهائي
+            let finalUrl = baseUrl + (ep.path.startsWith('/') ? ep.path : '/' + ep.path);
             if (ep.hasParams && ep.params) {
                 ep.params.forEach(param => {
-                    const val = document.getElementById(`param-${index}-${param}`).value;
+                    const el = document.getElementById(`param-${index}-${param}`);
+                    const val = el ? el.value.trim() : '';
                     if(val) finalUrl = finalUrl.replace(`{${param}}`, encodeURIComponent(val));
                 });
             }
 
+            // 2. إعدادات الطلب الأساسية (Headers & Method)
+            let fetchMethod = ep.method.toUpperCase();
             const options = {
-                method: ep.method,
+                method: fetchMethod,
                 headers: { 'Accept': 'application/json' }
             };
 
@@ -331,65 +338,110 @@
                 options.headers['Authorization'] = `Bearer ${token}`;
             }
 
-            // Build Payload
-            if (ep.method !== 'GET') {
-                if (ep.isDnaAnalysis) {
-                    const activeTab = document.getElementById(`dna-active-tab-${index}`).value;
+            // 3. تجهيز البيانات (Payload)
+            if (fetchMethod !== 'GET' && fetchMethod !== 'HEAD') {
+
+                let hasFile = false;
+                if (ep.fields) {
+                    hasFile = ep.fields.some(f => f.type === 'file');
+                }
+
+                // === التعديل الجوهري: إجبار الـ DNA Analysis على استخدام FormData ===
+                if (hasFile || ep.bodyType === 'formdata' || ep.isDnaAnalysis) {
                     const formData = new FormData();
 
-                    if (activeTab === 'sequence') {
-                        formData.append('sequence', document.getElementById(`dna-seq-${index}`).value);
-                    } else {
-                        const fileInput = document.getElementById(`dna-file-${index}`);
-                        if(fileInput.files[0]) formData.append('file', fileInput.files[0]);
+                    // دعم ملفات الـ PUT/PATCH عبر الـ Method Spoofing
+                    if (fetchMethod === 'PUT' || fetchMethod === 'PATCH') {
+                        options.method = 'POST';
+                        formData.append('_method', fetchMethod);
                     }
+
+                    // الحقول العادية إن وجدت
+                    if (ep.fields) {
+                        ep.fields.forEach(f => {
+                            const input = document.getElementById(`field-${index}-${f.name}`);
+                            if (!input) return;
+
+                            if (f.type === 'file') {
+                                if (input.files && input.files.length > 0) {
+                                    formData.append(f.name, input.files[0]);
+                                }
+                            } else {
+                                formData.append(f.name, input.value);
+                            }
+                        });
+                    }
+
+                    // 🧬 معالجة حقول الـ DNA Analysis بأعلى دقة 🧬
+                    if (ep.isDnaAnalysis) {
+                        const activeTabEl = document.getElementById(`dna-active-tab-${index}`);
+                        // إذا لم يجد العنصر، يفترض افتراضياً أننا في تاب الـ sequence
+                        const activeTab = activeTabEl ? activeTabEl.value : 'sequence';
+
+                        if (activeTab === 'sequence') {
+                            const seqInput = document.getElementById(`dna-seq-${index}`);
+                            if (seqInput && seqInput.value.trim() !== '') {
+                                formData.append('sequence', seqInput.value.trim());
+                            }
+                        } else {
+                            const fileInput = document.getElementById(`dna-file-${index}`);
+                            if (fileInput && fileInput.files && fileInput.files.length > 0) {
+                                formData.append('file', fileInput.files[0]);
+                            }
+                        }
+                    }
+
                     options.body = formData;
 
-                } else if (ep.bodyType === 'json' && ep.fields) {
+                // === التعامل مع JSON العادي ===
+                } else {
                     const bodyObj = {};
-                    ep.fields.forEach(f => {
-                        let val = document.getElementById(`field-${index}-${f.name}`).value;
-                        // For nested JSON strings (e.g. Evidence payload data)
-                        if (val.startsWith('{') && val.endsWith('}')) {
-                            try { val = JSON.parse(val); } catch(e) {}
-                        }
-                        bodyObj[f.name] = val;
-                    });
+                    if (ep.fields) {
+                        ep.fields.forEach(f => {
+                            const input = document.getElementById(`field-${index}-${f.name}`);
+                            if (!input) return;
+
+                            let val = input.value;
+                            if (f.name === 'data' || (val && (val.startsWith('{') || val.startsWith('[')))) {
+                                try { val = JSON.parse(val); }
+                                catch(e) { console.warn(`Could not parse JSON for ${f.name}`); }
+                            }
+                            bodyObj[f.name] = val;
+                        });
+                    }
                     options.body = JSON.stringify(bodyObj);
                     options.headers['Content-Type'] = 'application/json';
-
-                } else if (ep.bodyType === 'formdata' && ep.fields) {
-                    const formData = new FormData();
-                    ep.fields.forEach(f => {
-                        const input = document.getElementById(`field-${index}-${f.name}`);
-                        if (f.type === 'file') {
-                            if (input.files.length > 0) formData.append(f.name, input.files[0]);
-                        } else {
-                            formData.append(f.name, input.value);
-                        }
-                    });
-                    options.body = formData;
                 }
             }
 
+            // 4. تنفيذ الطلب (Execution & Error Handling)
             try {
                 const res = await fetch(finalUrl, options);
 
                 statusBox.textContent = res.status;
-                if(res.ok) {
+                if(res.ok || res.status === 201) {
                     statusBox.className = "ml-2 px-2 py-0.5 rounded text-xs font-bold bg-green-600 text-white";
+                } else if(res.status === 422) {
+                    statusBox.className = "ml-2 px-2 py-0.5 rounded text-xs font-bold bg-yellow-500 text-white";
                 } else {
                     statusBox.className = "ml-2 px-2 py-0.5 rounded text-xs font-bold bg-red-600 text-white";
                 }
 
-                const data = await res.json();
-                responseBox.textContent = JSON.stringify(data, null, 2);
+                const textData = await res.text();
+                try {
+                    const jsonData = JSON.parse(textData);
+                    responseBox.textContent = JSON.stringify(jsonData, null, 2);
+                } catch (e) {
+                    responseBox.textContent = textData || "Empty Response from Server";
+                }
+
             } catch(e) {
                 statusBox.textContent = "ERROR";
                 statusBox.className = "ml-2 px-2 py-0.5 rounded text-xs font-bold bg-red-600 text-white";
-                responseBox.textContent = "Network Error or Request Failed:\n" + e.toString();
+                responseBox.textContent = "Network Error, CORS Issue, or Request Failed:\n" + e.toString();
             }
         }
+
 
         function toggleDetails(index) {
             const details = document.getElementById(`details-${index}`);
