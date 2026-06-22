@@ -48,7 +48,7 @@
         <div class="bg-cardBg p-5 rounded-lg border border-gray-700 shadow-lg flex flex-col md:flex-row gap-4 items-end">
             <div class="flex-1 w-full" style="display: none;">
                 <label class="block text-sm text-gray-400 mb-1">Base URL</label>
-                <input type="text" id="baseUrl" value="http://fronsicai-production-6288.up.railway.appy/"  oninput="updateAllUrls()" class="w-full bg-darkBg border border-gray-600 rounded p-2 text-white outline-none focus:border-primary">
+                <input type="text" id="baseUrl" value="http://fronsicai-production-6288.up.railway.app/"  oninput="updateAllUrls()" class="w-full bg-darkBg border border-gray-600 rounded p-2 text-white outline-none focus:border-primary">
             </div>
             <div class="flex-1 w-full">
                 <label class="block text-sm text-gray-400 mb-1">Authorization (Bearer Token)</label>
